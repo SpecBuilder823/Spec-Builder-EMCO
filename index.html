@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
 <title>EMCO Spec Builder Pro</title>
 
 <style>
@@ -11,15 +12,15 @@
 margin:0;
 padding:0;
 box-sizing:border-box;
-font-family:'Segoe UI',sans-serif;
+font-family:Segoe UI,sans-serif;
 }
 
 body{
 background:#f4f7fb;
-color:#1e293b;
+color:#1f2937;
 }
 
-.header{
+header{
 background:#0f172a;
 color:white;
 padding:20px 40px;
@@ -28,12 +29,11 @@ justify-content:space-between;
 align-items:center;
 }
 
-.logo{
+header h1{
 font-size:28px;
-font-weight:bold;
 }
 
-.logo span{
+header span{
 color:#3b82f6;
 }
 
@@ -43,7 +43,7 @@ margin:auto;
 padding:30px;
 }
 
-.dashboard{
+.cards{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
 gap:20px;
@@ -53,59 +53,78 @@ margin-bottom:30px;
 .card{
 background:white;
 padding:25px;
-border-radius:16px;
-box-shadow:0 5px 20px rgba(0,0,0,.08);
+border-radius:15px;
+box-shadow:0 2px 15px rgba(0,0,0,.08);
 }
 
 .card h2{
+font-size:34px;
 color:#2563eb;
-font-size:32px;
 margin-bottom:10px;
 }
 
-.card p{
-color:#64748b;
-}
-
-.upload-box{
+.upload{
 background:white;
-padding:50px;
-border-radius:16px;
-text-align:center;
+padding:40px;
 border:3px dashed #3b82f6;
-box-shadow:0 5px 20px rgba(0,0,0,.08);
+border-radius:15px;
+text-align:center;
 margin-bottom:30px;
 }
 
-.upload-box h2{
+.upload h2{
 margin-bottom:10px;
 }
 
-.upload-box p{
+.upload p{
 color:#64748b;
-margin-bottom:20px;
-}
-
-.upload-btn{
-background:#2563eb;
-color:white;
-padding:14px 25px;
-border:none;
-border-radius:10px;
-cursor:pointer;
-font-size:16px;
+margin-bottom:15px;
 }
 
 .section{
 background:white;
 padding:25px;
-border-radius:16px;
-box-shadow:0 5px 20px rgba(0,0,0,.08);
+border-radius:15px;
+box-shadow:0 2px 15px rgba(0,0,0,.08);
 margin-bottom:25px;
 }
 
 .section h2{
 margin-bottom:20px;
+}
+
+.form{
+display:grid;
+grid-template-columns:1fr 1fr 1fr auto;
+gap:15px;
+}
+
+input,select{
+padding:12px;
+border:1px solid #cbd5e1;
+border-radius:10px;
+width:100%;
+}
+
+button{
+background:#2563eb;
+color:white;
+border:none;
+border-radius:10px;
+padding:12px 20px;
+cursor:pointer;
+}
+
+button:hover{
+background:#1d4ed8;
+}
+
+.generate{
+width:100%;
+padding:18px;
+font-size:18px;
+font-weight:bold;
+background:#0f172a;
 }
 
 table{
@@ -122,72 +141,27 @@ text-align:left;
 
 td{
 padding:12px;
-border-bottom:1px solid #e2e8f0;
+border-bottom:1px solid #e5e7eb;
 }
 
 .status{
 background:#dcfce7;
 color:#166534;
-padding:4px 12px;
+padding:5px 10px;
 border-radius:20px;
 font-size:12px;
 font-weight:bold;
 }
 
-.form-row{
-display:flex;
-gap:15px;
-flex-wrap:wrap;
+.manual{
+background:#fef3c7;
+color:#92400e;
 }
 
-input,select{
-padding:12px;
-border:1px solid #cbd5e1;
-border-radius:10px;
-flex:1;
-}
+@media(max-width:900px){
 
-.add-btn{
-background:#2563eb;
-color:white;
-border:none;
-padding:12px 20px;
-border-radius:10px;
-cursor:pointer;
-}
-
-.generate{
-width:100%;
-padding:20px;
-background:#0f172a;
-color:white;
-border:none;
-border-radius:12px;
-font-size:18px;
-font-weight:bold;
-cursor:pointer;
-}
-
-.generate:hover{
-background:#1e293b;
-}
-
-.footer{
-text-align:center;
-color:#64748b;
-margin-top:30px;
-}
-
-@media(max-width:768px){
-
-.form-row{
-flex-direction:column;
-}
-
-.header{
-flex-direction:column;
-gap:10px;
-text-align:center;
+.form{
+grid-template-columns:1fr;
 }
 
 }
@@ -197,51 +171,46 @@ text-align:center;
 
 <body>
 
-<div class="header">
-<div class="logo">
-EMCO <span>Spec Builder Pro</span>
-</div>
-
-<div>
-Generate Professional Specification Books
-</div>
-</div>
+<header>
+<h1>EMCO <span>Spec Builder Pro</span></h1>
+<div>Specification Book Generator</div>
+</header>
 
 <div class="container">
 
-<div class="dashboard">
+<div class="cards">
 
 <div class="card">
 <h2>18</h2>
-<p>Manufacturers</p>
+<div>Manufacturers</div>
 </div>
 
 <div class="card">
 <h2>125</h2>
-<p>Products Indexed</p>
+<div>Products Indexed</div>
 </div>
 
 <div class="card">
 <h2>97%</h2>
-<p>Recognition Rate</p>
+<div>Recognition Rate</div>
 </div>
 
 <div class="card">
 <h2>8</h2>
-<p>Spec Books Today</p>
+<div>Spec Books Today</div>
 </div>
 
 </div>
 
-<div class="upload-box">
+<div class="upload">
 
 <h2>Upload Quote PDF</h2>
 
 <p>
-Drag and drop your quotation PDF or browse files
+Upload a quotation PDF to detect products automatically
 </p>
 
-<input type="file" id="fileInput">
+<input type="file">
 
 </div>
 
@@ -265,15 +234,9 @@ Drag and drop your quotation PDF or browse files
 <td>Delta</td>
 <td>T17238</td>
 <td>
-<span class="status">Found</span>
-</td>
-</tr>
-
-<tr>
-<td>Riobel</td>
-<td>RU01</td>
-<td>
-<span class="status">Found</span>
+<span class="status">
+Found
+</span>
 </td>
 </tr>
 
@@ -287,29 +250,37 @@ Drag and drop your quotation PDF or browse files
 
 <h2>Add Product Manually</h2>
 
-<div class="form-row">
+<div class="form">
 
-<select id="brand">
+<select id="brand" onchange="toggleCustomBrand()">
 
-<option>Delta</option>
-<option>Riobel</option>
-<option>Brizo</option>
-<option>Moen</option>
-<option>Kohler</option>
-<option>Grohe</option>
-<option>Hansgrohe</option>
-<option>Toto</option>
+<option value="Delta">Delta</option>
+<option value="Riobel">Riobel</option>
+<option value="Brizo">Brizo</option>
+<option value="Moen">Moen</option>
+<option value="Kohler">Kohler</option>
+<option value="Grohe">Grohe</option>
+<option value="Hansgrohe">Hansgrohe</option>
+<option value="Toto">Toto</option>
+<option value="Blanco">Blanco</option>
+<option value="Franke">Franke</option>
+
+<option value="CUSTOM">
+Other Brand...
+</option>
 
 </select>
 
 <input
-type="text"
-id="model"
-placeholder="Enter model number">
+id="customBrand"
+placeholder="Custom Brand Name"
+style="display:none;">
 
-<button
-class="add-btn"
-onclick="addProduct()">
+<input
+id="model"
+placeholder="Model Number">
+
+<button onclick="addProduct()">
 Add Product
 </button>
 
@@ -319,54 +290,100 @@ Add Product
 
 <button
 class="generate"
-onclick="generateBook()">
+onclick="generateSpecBook()">
 
 Generate Spec Book
 
 </button>
 
-<div class="footer">
-
-EMCO Spec Builder Pro v1.0
-
-</div>
-
 </div>
 
 <script>
+
+function toggleCustomBrand(){
+
+let value =
+document.getElementById("brand").value;
+
+let custom =
+document.getElementById("customBrand");
+
+if(value==="CUSTOM"){
+
+custom.style.display="block";
+
+}else{
+
+custom.style.display="none";
+
+}
+
+}
 
 function addProduct(){
 
 let brand =
 document.getElementById("brand").value;
 
+if(brand==="CUSTOM"){
+
+brand =
+document.getElementById("customBrand")
+.value
+.trim();
+
+}
+
 let model =
-document.getElementById("model").value;
+document.getElementById("model")
+.value
+.trim();
+
+if(brand===""){
+
+alert("Enter a brand");
+return;
+
+}
 
 if(model===""){
-alert("Please enter a model number");
+
+alert("Enter a model number");
 return;
+
 }
 
-let table =
-document.getElementById("products");
+let row=`
 
-table.innerHTML += `
 <tr>
+
 <td>${brand}</td>
+
 <td>${model}</td>
-<td><span class="status">Manual</span></td>
+
+<td>
+<span class="status manual">
+Manual Entry
+</span>
+</td>
+
 </tr>
+
 `;
 
+document
+.getElementById("products")
+.insertAdjacentHTML("beforeend",row);
+
 document.getElementById("model").value="";
+document.getElementById("customBrand").value="";
 
 }
 
-function generateBook(){
+function generateSpecBook(){
 
 alert(
-"Spec Book generation module will be connected in Version 2"
+"Spec Book generation will be connected in Version 2."
 );
 
 }
