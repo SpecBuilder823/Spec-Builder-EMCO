@@ -328,11 +328,16 @@ Continue to Products
 
 <br>
 
-<input type="file">
+<input
+type="file"
+id="pdfFile"
+accept=".pdf">
 
 </div>
 
-<button class="btn">
+<button
+class="btn"
+onclick="readQuote()">
 Read Quote
 </button>
 
@@ -425,7 +430,101 @@ document.getElementById("roomInput").value="";
 
 }
 
-</script>
+async function readQuote(){
 
-</body>
-</html>
+const file =
+document.getElementById("pdfFile").files[0];
+
+if(!file){
+
+alert("Please select a PDF.");
+return;
+
+}
+
+const arrayBuffer =
+await file.arrayBuffer();
+
+const pdf =
+await pdfjsLib.getDocument({
+data:arrayBuffer
+}).promise;
+
+let fullText = "";
+
+for(let page=1; page<=pdf.numPages; page++){
+
+const currentPage =
+await pdf.getPage(page);
+
+const content =
+await currentPage.getTextContent();
+
+const pageText =
+content.items
+.map(item=>item.str)
+.join(" ");
+
+fullText += pageText + "\n";
+
+}
+
+detectRooms(fullText);
+
+}
+
+function detectRooms(text){
+
+const rooms = [
+
+"KITCHEN",
+"KITCHEN SS",
+"POWDER ROOM",
+"MASTER ENSUITE",
+"ENSUITE UPPER FLOOR",
+"BATH",
+"LAUNDRY"
+
+];
+
+let foundRooms = [];
+
+rooms.forEach(room=>{
+
+if(
+text.toUpperCase()
+.includes(room)
+){
+
+foundRooms.push(room);
+
+}
+
+});
+
+renderRooms(foundRooms);
+
+}
+
+function renderRooms(rooms){
+
+const container =
+document.getElementById("manualRooms");
+
+container.innerHTML = "";
+
+rooms.forEach(room=>{
+
+container.innerHTML +=
+
+`
+<div class="room">
+✅ ${room}
+</div>
+`;
+
+});
+
+}
+
+</script>
