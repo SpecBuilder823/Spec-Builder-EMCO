@@ -1,243 +1,686 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
 
-<title>EMCO Spec Builder Pro</title>
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>The Ensuite Spec Book Builder</title>
 
 <style>
+
+:root{
+--gold:#c7a46c;
+--navy:#0d1b2a;
+--light:#f4f4f2;
+--card:#ffffff;
+--border:#e0e4e8;
+}
 
 *{
 margin:0;
 padding:0;
 box-sizing:border-box;
-font-family:Segoe UI,sans-serif;
+font-family:"Segoe UI",sans-serif;
 }
 
 body{
-background:#f4f7fb;
-color:#1f2937;
+background:#f4f4f2;
+color:#1d2939;
 }
 
-header{
-background:#0f172a;
-color:white;
-padding:20px 40px;
+.topbar{
+
+background:black;
+padding:20px 50px;
+
 display:flex;
-justify-content:space-between;
 align-items:center;
+justify-content:space-between;
+gap:20px;
+
 }
 
-header h1{
+.logo-area{
+
+display:flex;
+align-items:center;
+gap:25px;
+
+}
+
+.logo-area img{
+
+height:70px;
+width:auto;
+
+}
+
+.brand-text{
+
+color:white;
+
+}
+
+.brand-text h1{
+
 font-size:28px;
+
 }
 
-header span{
-color:#3b82f6;
+.brand-text p{
+
+opacity:.8;
+
 }
 
-.container{
+.topbar-right{
+
+color:white;
+font-size:18px;
+opacity:.8;
+
+}
+
+.wrapper{
+
 max-width:1400px;
 margin:auto;
-padding:30px;
+padding:35px;
+
 }
 
-.cards{
+.hero{
+
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-gap:20px;
+grid-template-columns:1.1fr 1fr;
+
+background:#0d1b2a;
+
+border-radius:35px;
+overflow:hidden;
+
 margin-bottom:30px;
+
+}
+
+.hero-left{
+
+padding:60px;
+
+background:
+linear-gradient(
+90deg,
+rgba(10,20,35,.95),
+rgba(10,20,35,.7)
+);
+
+color:white;
+
+display:flex;
+flex-direction:column;
+justify-content:center;
+
+}
+
+.hero-label{
+
+color:var(--gold);
+font-weight:700;
+letter-spacing:3px;
+margin-bottom:20px;
+
+}
+
+.hero h2{
+
+font-size:65px;
+line-height:1.05;
+margin-bottom:25px;
+
+}
+
+.hero p{
+
+font-size:24px;
+line-height:1.6;
+
+}
+
+.hero-tag{
+
+margin-top:30px;
+
+display:inline-block;
+
+padding:15px 25px;
+
+border:1px solid rgba(255,255,255,.3);
+
+border-radius:999px;
+
+}
+
+.hero-image{
+
+background-image:url('hero-bathroom.png');
+background-size:cover;
+background-position:center;
+
+min-height:550px;
+
+}
+
+.steps{
+
+display:grid;
+grid-template-columns:1fr 1fr 1fr;
+gap:18px;
+
+margin-bottom:30px;
+
+}
+
+.step{
+
+background:white;
+padding:25px;
+
+border-radius:22px;
+border:1px solid #ddd;
+
+display:flex;
+align-items:center;
+gap:15px;
+
+font-weight:600;
+
+}
+
+.number{
+
+width:45px;
+height:45px;
+
+background:#111827;
+color:white;
+
+border-radius:50%;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
 }
 
 .card{
+
 background:white;
-padding:25px;
-border-radius:15px;
-box-shadow:0 2px 15px rgba(0,0,0,.08);
-}
 
-.card h2{
-font-size:34px;
-color:#2563eb;
-margin-bottom:10px;
-}
+padding:35px;
 
-.upload{
-background:white;
-padding:40px;
-border:3px dashed #3b82f6;
-border-radius:15px;
-text-align:center;
-margin-bottom:30px;
-}
+border-radius:28px;
 
-.upload h2{
-margin-bottom:10px;
-}
-
-.upload p{
-color:#64748b;
-margin-bottom:15px;
-}
-
-.section{
-background:white;
-padding:25px;
-border-radius:15px;
-box-shadow:0 2px 15px rgba(0,0,0,.08);
 margin-bottom:25px;
+
+border:1px solid var(--border);
+
 }
 
-.section h2{
+.card h3{
+
+font-size:32px;
 margin-bottom:20px;
+
+color:#102a43;
+
 }
 
-.form{
+.form-grid{
+
 display:grid;
-grid-template-columns:1fr 1fr 1fr auto;
-gap:15px;
+grid-template-columns:1fr 1fr;
+gap:20px;
+
 }
 
-input,select{
-padding:12px;
-border:1px solid #cbd5e1;
-border-radius:10px;
-width:100%;
+.form-group{
+
+display:flex;
+flex-direction:column;
+gap:8px;
+
 }
 
-button{
-background:#2563eb;
+label{
+
+font-weight:600;
+
+}
+
+input,
+select{
+
+padding:16px;
+
+border-radius:12px;
+
+border:1px solid #d0d5dd;
+
+font-size:16px;
+
+}
+
+.note{
+
+margin-top:25px;
+
+padding:20px;
+
+background:#f7f4ef;
+
+border:1px solid #e7dbc9;
+
+border-radius:15px;
+
+}
+
+.btn{
+
+background:#111827;
 color:white;
+
 border:none;
-border-radius:10px;
-padding:12px 20px;
+
+padding:15px 25px;
+
+border-radius:12px;
+
+font-weight:600;
+
 cursor:pointer;
+
+margin-top:20px;
+
 }
 
-button:hover{
-background:#1d4ed8;
+.two-column{
+
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:30px;
+
 }
 
-.generate{
-width:100%;
-padding:18px;
-font-size:18px;
-font-weight:bold;
-background:#0f172a;
+.upload-box{
+
+border:2px dashed var(--gold);
+
+border-radius:20px;
+
+padding:45px;
+
+text-align:center;
+
+margin-bottom:20px;
+
+}
+
+.upload-box h4{
+
+font-size:24px;
+margin-bottom:10px;
+
+}
+
+.rooms-container{
+
+margin-top:20px;
+
+}
+
+.room{
+
+background:#f8fafc;
+
+padding:15px;
+
+border-radius:12px;
+
+margin-bottom:10px;
+
+border-left:5px solid var(--gold);
+
+font-weight:600;
+
+}
+
+.detected-room{
+
+background:#ecfdf3;
+border-left:5px solid #22c55e;
 }
 
 table{
+
 width:100%;
 border-collapse:collapse;
+margin-top:25px;
+
 }
 
-th{
-background:#2563eb;
+table th{
+
+background:#102a43;
 color:white;
-padding:12px;
+
+padding:15px;
 text-align:left;
+
 }
 
-td{
-padding:12px;
-border-bottom:1px solid #e5e7eb;
+table td{
+
+padding:14px;
+border-bottom:1px solid #eee;
+
 }
 
 .status{
+
+padding:8px 12px;
+
+border-radius:20px;
+
+font-size:12px;
+font-weight:700;
+
 background:#dcfce7;
 color:#166534;
-padding:5px 10px;
-border-radius:20px;
-font-size:12px;
-font-weight:bold;
+
 }
 
-.manual{
-background:#fef3c7;
-color:#92400e;
+.generate{
+
+width:100%;
+
+padding:20px;
+
+background:black;
+
+color:white;
+
+font-size:20px;
+
+border:none;
+
+border-radius:15px;
+
+cursor:pointer;
+
 }
 
-@media(max-width:900px){
+@media(max-width:1000px){
 
-.form{
+.hero{
+
 grid-template-columns:1fr;
+
+}
+
+.hero h2{
+
+font-size:45px;
+
+}
+
+.two-column{
+
+grid-template-columns:1fr;
+
+}
+
+.form-grid{
+
+grid-template-columns:1fr;
+
+}
+
+.steps{
+
+grid-template-columns:1fr;
+
 }
 
 }
 
 </style>
+
 </head>
 
 <body>
 
-<header>
-<h1>EMCO <span>Spec Builder Pro</span></h1>
-<div>Specification Book Generator</div>
-</header>
+<div class="topbar">
 
-<div class="container">
+<div class="logo-area">
 
-<div class="cards">
+<img src="logo.png">
 
-<div class="card">
-<h2>18</h2>
-<div>Manufacturers</div>
-</div>
-
-<div class="card">
-<h2>125</h2>
-<div>Products Indexed</div>
-</div>
-
-<div class="card">
-<h2>97%</h2>
-<div>Recognition Rate</div>
-</div>
-
-<div class="card">
-<h2>8</h2>
-<div>Spec Books Today</div>
+<div class="brand-text">
+<h1>Spec Book Builder Pro</h1>
+<p>The Ensuite Showroom Tool</p>
 </div>
 
 </div>
 
-<div class="upload">
+<div class="topbar-right">
+A polished specification book, room by room
+</div>
 
-<h2>Upload Quote PDF</h2>
+</div>
+
+<div class="wrapper">
+
+<div class="hero">
+
+<div class="hero-left">
+
+<div class="hero-label">
+PRODUCT SPECIFICATION BOOKS
+</div>
+
+<h2>
+Bring every product detail together.
+</h2>
 
 <p>
-Upload a quotation PDF to detect products automatically
+Turn a quote and official specification sheets into one organized book, ready to review and share.
 </p>
+
+<div class="hero-tag">
+Room-by-room project workflow
+</div>
+
+</div>
+
+<div class="hero-image"></div>
+
+</div>
+
+<div class="steps">
+
+<div class="step">
+<div class="number">01</div>
+Project Details
+</div>
+
+<div class="step">
+<div class="number">02</div>
+Rooms & Products
+</div>
+
+<div class="step">
+<div class="number">03</div>
+Review & Export
+</div>
+
+</div>
+
+<div class="card">
+
+<h3>Project Details</h3>
+
+<div class="form-grid">
+
+<div class="form-group">
+<label>Project Name</label>
+<input placeholder="Oak Residence">
+</div>
+
+<div class="form-group">
+<label>Prepared By</label>
+<input placeholder="Valeria Cruz">
+</div>
+
+</div>
+
+<div class="note">
+
+The final PDF will include a cover page, room dividers, specification sheets and a complete room-by-room product package.
+
+</div>
+
+<button class="btn">
+Continue to Products
+</button>
+
+</div>
+
+<div class="card">
+
+<h3>Add Products</h3>
+
+<div class="two-column">
+
+<div>
+
+<h4 style="margin-bottom:15px;">
+Import Existing Quote
+</h4>
+
+<p style="margin-bottom:20px;">
+Upload PDF, Excel or CSV.
+Future versions will automatically detect products and rooms.
+</p>
+
+<div class="upload-box">
+
+<h4>Choose a Quote File</h4>
+
+<p>PDF • Excel • CSV</p>
+
+<br>
 
 <input type="file">
 
 </div>
 
-<div class="section">
+<button class="btn">
+Read Quote
+</button>
 
-<h2>Detected Products</h2>
+<div class="rooms-container">
+
+<h4 style="margin:25px 0 10px;">
+Detected Rooms
+</h4>
+
+<div class="room detected-room">
+✅ Kitchen
+</div>
+
+<div class="room detected-room">
+✅ Primary Ensuite
+</div>
+
+<div class="room detected-room">
+✅ Powder Room
+</div>
+
+</div>
+
+</div>
+
+<div>
+
+<h4 style="margin-bottom:15px;">
+Add Product Manually
+</h4>
+
+<select>
+<option>Kitchen</option>
+<option>Primary Ensuite</option>
+<option>Powder Room</option>
+<option>Custom Room</option>
+</select>
+
+<br><br>
+
+<input
+placeholder="Brand (e.g. Riobel, Blanco, Waterstone)">
+
+<br><br>
+
+<input
+placeholder="Model Number">
+
+<br><br>
+
+<button class="btn">
++ Add Product
+</button>
+
+<div style="margin-top:25px;">
+
+<input
+id="newRoom"
+placeholder="Add New Room">
+
+<button
+class="btn"
+onclick="addRoom()">
+
++ Add Room
+
+</button>
+
+</div>
+
+</div>
+
+</div>
 
 <table>
 
 <thead>
+
 <tr>
+<th>Room</th>
 <th>Brand</th>
 <th>Model</th>
 <th>Status</th>
 </tr>
+
 </thead>
 
-<tbody id="products">
+<tbody id="productTable">
 
 <tr>
-<td>Delta</td>
-<td>T17238</td>
-<td>
-<span class="status">
-Found
-</span>
-</td>
+<td>Kitchen</td>
+<td>Blanco</td>
+<td>442533</td>
+<td><span class="status">Ready</span></td>
 </tr>
 
 </tbody>
@@ -246,145 +689,32 @@ Found
 
 </div>
 
-<div class="section">
-
-<h2>Add Product Manually</h2>
-
-<div class="form">
-
-<select id="brand" onchange="toggleCustomBrand()">
-
-<option value="Delta">Delta</option>
-<option value="Riobel">Riobel</option>
-<option value="Brizo">Brizo</option>
-<option value="Moen">Moen</option>
-<option value="Kohler">Kohler</option>
-<option value="Grohe">Grohe</option>
-<option value="Hansgrohe">Hansgrohe</option>
-<option value="Toto">Toto</option>
-<option value="Blanco">Blanco</option>
-<option value="Franke">Franke</option>
-
-<option value="CUSTOM">
-Other Brand...
-</option>
-
-</select>
-
-<input
-id="customBrand"
-placeholder="Custom Brand Name"
-style="display:none;">
-
-<input
-id="model"
-placeholder="Model Number">
-
-<button onclick="addProduct()">
-Add Product
-</button>
-
-</div>
-
-</div>
-
-<button
-class="generate"
-onclick="generateSpecBook()">
-
-Generate Spec Book
-
+<button class="generate">
+Generate Specification Book
 </button>
 
 </div>
 
 <script>
 
-function toggleCustomBrand(){
+function addRoom(){
 
-let value =
-document.getElementById("brand").value;
+let room =
+document.getElementById("newRoom").value;
 
-let custom =
-document.getElementById("customBrand");
+if(room==="") return;
 
-if(value==="CUSTOM"){
-
-custom.style.display="block";
-
-}else{
-
-custom.style.display="none";
-
-}
-
-}
-
-function addProduct(){
-
-let brand =
-document.getElementById("brand").value;
-
-if(brand==="CUSTOM"){
-
-brand =
-document.getElementById("customBrand")
-.value
-.trim();
-
-}
-
-let model =
-document.getElementById("model")
-.value
-.trim();
-
-if(brand===""){
-
-alert("Enter a brand");
-return;
-
-}
-
-if(model===""){
-
-alert("Enter a model number");
-return;
-
-}
-
-let row=`
-
-<tr>
-
-<td>${brand}</td>
-
-<td>${model}</td>
-
-<td>
-<span class="status manual">
-Manual Entry
-</span>
-</td>
-
-</tr>
-
+let html = `
+<div class="room">
+${room}
+</div>
 `;
 
 document
-.getElementById("products")
-.insertAdjacentHTML("beforeend",row);
+.querySelector(".rooms-container")
+.insertAdjacentHTML("beforeend",html);
 
-document.getElementById("model").value="";
-document.getElementById("customBrand").value="";
-
-}
-
-function generateSpecBook(){
-
-alert(
-"Spec Book generation will be connected in Version 2."
-);
+document.getElementById("newRoom").value="";
 
 }
 
