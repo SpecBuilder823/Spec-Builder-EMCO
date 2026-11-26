@@ -401,6 +401,8 @@ onclick="addRoom()">
 
 <div id="manualRooms"></div>
 
+  <div id="productsByRoom"></div>
+
 </div>
 
 </div>
@@ -451,6 +453,7 @@ data:arrayBuffer
 }).promise;
 
 let sections = [];
+let currentSection = null;
 
 for(let pageNumber=1; pageNumber<=pdf.numPages; pageNumber++){
 
@@ -499,18 +502,50 @@ renderSections(sections);
 
 function renderSections(sections){
 
-const container =
+const roomContainer =
 document.getElementById("manualRooms");
 
-container.innerHTML="";
+const productContainer =
+document.getElementById("productsByRoom");
 
-if(sections.length===0){
+roomContainer.innerHTML="";
+productContainer.innerHTML="";
 
-container.innerHTML = `
+sections.forEach(section=>{
+
+roomContainer.innerHTML += `
+
 <div class="room">
-No sections found
+✅ ${section.title}
+</div>
+
+`;
+
+let productHtml = `
+<div class="card" style="margin-top:15px;">
+<h3>${section.title}</h3>
+<ul>
+`;
+
+section.products.forEach(product=>{
+
+productHtml += `
+<li>${product}</li>
+`;
+
+});
+
+productHtml += `
+</ul>
 </div>
 `;
+
+productContainer.innerHTML += productHtml;
+
+});
+
+}
+
 
 return;
 
