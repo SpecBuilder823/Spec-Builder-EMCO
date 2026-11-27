@@ -235,6 +235,10 @@ async function readQuote() {
             allItems.concat(
                 textContent.items
             );
+        console.log(
+textContent.items
+);
+
 
     }
 
