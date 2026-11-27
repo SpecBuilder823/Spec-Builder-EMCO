@@ -3,102 +3,296 @@
 
 <head>
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>The Ensuite Spec Builder</title>
+<title>The Ensuite Spec Builder</title>
 
-    <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css">
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 
 </head>
 
 <body>
 
-    <!-- HEADER -->
+<header class="header">
 
-    <header class="header">
+    <div class="logo-container">
 
-        <div class="logo-container">
+        <img
+            src="cropped-TheEnsuiteLogo_By_Emco_White_S_Low.png"
+            class="logo"
+            alt="The Ensuite">
 
-            <img
-                src="cropped-TheEnsuiteLogo_By_Emco_White_S_Low.png"
-                class="logo"
-                alt="The Ensuite">
+        <div>
+
+            <h1>Spec Builder Pro</h1>
+
+            <p>Generate Professional Specification Books</p>
+
+        </div>
+
+    </div>
+
+</header>
+
+<section class="hero">
+
+    <div class="hero-text">
+
+        <span class="hero-label">
+
+            THE ENSUITE TOOLKIT
+
+        </span>
+
+        <h2>
+
+            Build Specification Books Faster
+
+        </h2>
+
+        <p>
+
+            Upload a quote, review sections,
+            verify products and prepare professional
+            specification books.
+
+        </p>
+
+    </div>
+
+    <div class="hero-image"></div>
+
+</section>
+
+<main class="container">
+
+    <!-- PROJECT -->
+
+    <section class="card">
+
+        <h3>
+
+            Project Information
+
+        </h3>
+
+        <div class="grid-2">
 
             <div>
 
-                <h1>Spec Builder Pro</h1>
+                <label>
 
-                <p>Generate Professional Specification Books</p>
+                    Project Name
+
+                </label>
+
+                <input
+                    id="projectName"
+                    placeholder="Project Name">
+
+            </div>
+
+            <div>
+
+                <label>
+
+                    Prepared By
+
+                </label>
+
+                <input
+                    id="preparedBy"
+                    placeholder="Prepared By">
 
             </div>
 
         </div>
 
-    </header>
+    </section>
 
-    <!-- HERO -->
+    <!-- UPLOAD -->
 
-    <section class="hero">
+    <section class="card">
 
-        <div class="hero-text">
+        <h3>
 
-            <span class="hero-label">
-                THE ENSUITE TOOLKIT
-            </span>
+            Upload Quote
 
-            <h2>
-                Build Specification Books Faster.
-            </h2>
+        </h3>
 
-            <p>
-                Upload a quote, review sections,
-                verify products and prepare professional
-                specification packages.
-            </p>
+        <div class="upload-area">
+
+            <input
+                type="file"
+                id="pdfFile"
+                accept=".pdf">
+
+            <button
+                class="btn"
+                onclick="readQuote()">
+
+                Read Quote
+
+            </button>
 
         </div>
 
-        <div class="hero-image"></div>
+    </section>
+
+    <!-- DETECTED SECTIONS -->
+
+    <section class="card">
+
+        <div class="section-header">
+
+            <h3>
+
+                Detected Sections
+
+            </h3>
+
+            <button
+                class="btn-small"
+                onclick="showAddSection()">
+
+                + Add Section
+
+            </button>
+
+        </div>
+
+        <div id="sectionList">
+
+            <div class="empty-state">
+
+                No sections detected yet
+
+            </div>
+
+        </div>
 
     </section>
 
-    <!-- MAIN -->
+    <!-- ADD SECTION -->
 
-    <main class="container">
+    <section
+        id="addSectionCard"
+        class="card hidden">
 
-        <!-- PROJECT -->
+        <h3>
 
-        <section class="card">
+            Add Section
+
+        </h3>
+
+        <input
+            id="sectionName"
+            placeholder="Section Name">
+
+        <br><br>
+
+        <button
+            class="btn"
+            onclick="addSection()">
+
+            Save Section
+
+        </button>
+
+    </section>
+
+    <!-- PRODUCTS -->
+
+    <section class="card">
+
+        <div class="section-header">
 
             <h3>
-                Project Information
+
+                Products
+
             </h3>
 
-            <div class="grid-2">
+            <button
+                class="btn-small"
+                onclick="showAddProduct()">
 
-                <div>
+                + Add Product
 
-                    <label>
-                        Project Name
-                    </label>
+            </button>
 
-                    <input
-                        id="projectName"
-                        placeholder="Project Name">
+        </div>
 
-                </div>
+        <div id="productsContainer">
 
-                <div>
+            <div class="empty-state">
 
-                    <label>
-                        Prepared By
-                    </label>
+                No products loaded yet
 
-                    <input
-                        id="preparedBy"
-                        placeholder="Prepared By">
+            </div>
 
-                </
+        </div>
+
+    </section>
+
+    <!-- MANUAL PRODUCT -->
+
+    <section
+        id="manualProductCard"
+        class="card hidden">
+
+        <h3>
+
+            Add Product
+
+        </h3>
+
+        <div class="grid-3">
+
+            <select id="manualSection">
+
+            </select>
+
+            <input
+                id="manualBrand"
+                placeholder="Brand">
+
+            <input
+                id="manualModel"
+                placeholder="Model">
+
+        </div>
+
+        <br>
+
+        <button
+            class="btn"
+            onclick="addProduct()">
+
+            Save Product
+
+        </button>
+
+    </section>
+
+    <!-- GENERATE -->
+
+    <section class="card">
+
+        <button class="generate-btn">
+
+            Generate Specification Book
+
+        </button>
+
+    </section>
+
+</main>
+
+<script src="app.js"></script>
+
+</body>
+</html>
