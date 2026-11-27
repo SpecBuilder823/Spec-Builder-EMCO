@@ -250,6 +250,7 @@ textContent.items
 
 function detectSectionsFromCoordinates(items){
 
+    alert("NEW ALGORITHM RUNNING");
     const rows = [];
 
     items.forEach(item=>{
