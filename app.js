@@ -1,3 +1,14 @@
+function showAddSection(){
+
+    document
+        .getElementById(
+            "addSectionCard"
+        )
+        .classList
+        .remove("hidden");
+
+}
+
 let detectedSections = [];
 let products = [];
 
