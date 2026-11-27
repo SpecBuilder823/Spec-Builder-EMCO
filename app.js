@@ -248,9 +248,186 @@ textContent.items
 
 }
 
-function detectSectionsFromCoordinates(
-    items
-) {
+function detectSectionsFromCoordinates(items){
+
+    const rows = [];
+
+    items.forEach(item=>{
+
+        const text =
+        (item.str || "").trim();
+
+        if(text==="") return;
+
+        rows.push({
+
+            text,
+
+            x: item.transform[4],
+
+            y: Math.round(
+                item.transform[5]
+            )
+
+        });
+
+    });
+
+    const groupedRows = [];
+
+    rows.forEach(row=>{
+
+        let existing =
+
+        groupedRows.find(
+
+            r => Math.abs(
+                r.y-row.y
+            ) < 3
+
+        );
+
+        if(existing){
+
+            existing.cells.push(row);
+
+        }else{
+
+            groupedRows.push({
+
+                y: row.y,
+
+                cells:[row]
+
+            });
+
+        }
+
+    });
+
+    groupedRows.sort(
+        (a,b)=>b.y-a.y
+    );
+
+    detectedSections = [];
+
+    groupedRows.forEach(row=>{
+
+        row.cells.sort(
+            (a,b)=>a.x-b.x
+        );
+
+        const firstCell =
+        row.cells[0];
+
+        const secondCell =
+        row.cells[1];
+
+        const thirdCell =
+        row.cells[2];
+
+        const fourthCell =
+        row.cells[3];
+
+        const fifthCell =
+        row.cells[4];
+
+        /*
+        SECTION RULE
+
+        Column 1 empty
+        Column 2 contains text
+        Qty empty
+        Prices empty
+
+        Example:
+
+        MASTER BATH 60X30
+
+        visible in description column only
+        */
+
+        const modelColumnEmpty =
+
+        !firstCell ||
+        firstCell.text==="";
+
+        const descriptionColumnHasText =
+
+        secondCell &&
+        secondCell.text.length > 0;
+
+        const qtyEmpty =
+
+        !thirdCell;
+
+        const priceEmpty =
+
+        !fourthCell;
+
+        const subtotalEmpty =
+
+        !fifthCell;
+
+        const looksLikeSection =
+
+        descriptionColumnHasText &&
+        qtyEmpty &&
+        priceEmpty &&
+        subtotalEmpty;
+
+        if(looksLikeSection){
+
+            const title =
+            secondCell.text.trim();
+
+            if(
+
+                title.length > 2 &&
+
+                !title.includes("$") &&
+
+                !title.includes("CUSTOMER") &&
+
+                !title.includes("DATE")
+
+            ){
+
+                detectedSections.push({
+
+                    title,
+                    products:[]
+
+                });
+
+            }
+
+        }
+
+    });
+
+    detectedSections =
+
+    detectedSections.filter(
+
+        (section,index,self)=>
+
+        index===self.findIndex(
+            s=>s.title===section.title
+        )
+
+    );
+
+    renderSections();
+
+    alert(
+
+        detectedSections.length +
+        " sections detected"
+
+    );
+
+}
 
     const rows = [];
 
