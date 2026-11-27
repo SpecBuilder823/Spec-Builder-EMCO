@@ -109,23 +109,27 @@ function addProduct(){
 /* PDF IMPORT                 */
 /* -------------------------- */
 
-async function readQuote(){
+async function readQuote() {
 
-    try{
+    alert("Read Quote clicked");
 
-        const file =
+    const file =
+        document.getElementById("pdfFile").files[0];
 
-            document
-            .getElementById(
-                "pdfFile"
-            )
-            .files[0];
+    if (!file) {
 
-        if(!file){
+        alert("No PDF selected");
 
-            alert(
-                "Select a PDF first."
-            );
+        return;
+
+    }
+
+    alert(
+        "PDF Selected: " +
+        file.name
+    );
+
+}
 
             return;
 
