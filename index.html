@@ -430,15 +430,22 @@ document.getElementById("roomInput").value="";
 
 async function readQuote(){
 
-alert("readQuote started");
+alert("Button works");
 
 const file =
 document.getElementById("pdfFile").files[0];
 
 if(!file){
 
-alert("Please select a PDF.");
+alert("No PDF selected");
 return;
+
+}
+
+alert(
+"PDF selected: " +
+file.name
+);
 
 }
 
