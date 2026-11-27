@@ -1,3 +1,11 @@
+
+let detectedSections = [];
+let products = [];
+
+/* -------------------------- */
+/* MANUAL SECTION             */
+/* -------------------------- */
+
 function showAddSection(){
 
     document
@@ -9,34 +17,40 @@ function showAddSection(){
 
 }
 
-let detectedSections = [];
-let products = [];
-
-function addSection() {
+function addSection(){
 
     const name =
-        document.getElementById(
-            "sectionName"
-        ).value.trim();
 
-    if (!name) return;
+        document
+        .getElementById(
+            "sectionName"
+        )
+        .value
+        .trim();
+
+    if(!name) return;
 
     detectedSections.push({
 
-        title: name,
-        products: []
+        title:name
 
     });
 
-    document.getElementById(
-        "sectionName"
-    ).value = "";
-
     renderSections();
+
+    document
+        .getElementById(
+            "sectionName"
+        )
+        .value="";
 
 }
 
-function showAddProduct() {
+/* -------------------------- */
+/* MANUAL PRODUCT             */
+/* -------------------------- */
+
+function showAddProduct(){
 
     document
         .getElementById(
@@ -47,453 +61,198 @@ function showAddProduct() {
 
 }
 
-function addProduct() {
+function addProduct(){
 
     const section =
-        document.getElementById(
+
+        document
+        .getElementById(
             "manualSection"
-        ).value;
+        )
+        .value;
 
     const brand =
-        document.getElementById(
+
+        document
+        .getElementById(
             "manualBrand"
-        ).value.trim();
+        )
+        .value
+        .trim();
 
     const model =
-        document.getElementById(
-            "manualModel"
-        ).value.trim();
 
-    if (!section) return;
-    if (!brand) return;
-    if (!model) return;
+        document
+        .getElementById(
+            "manualModel"
+        )
+        .value
+        .trim();
+
+    if(!section) return;
+    if(!brand) return;
+    if(!model) return;
 
     products.push({
 
         section,
         brand,
-        model,
-        manual: true
+        model
 
     });
-
-    document.getElementById(
-        "manualBrand"
-    ).value = "";
-
-    document.getElementById(
-        "manualModel"
-    ).value = "";
 
     renderProducts();
 
 }
 
-function renderSections() {
+/* -------------------------- */
+/* PDF IMPORT                 */
+/* -------------------------- */
 
-    const container =
-        document.getElementById(
-            "sectionList"
-        );
+async function readQuote(){
 
-    const select =
-        document.getElementById(
-            "manualSection"
-        );
+    try{
 
-    container.innerHTML = "";
-    select.innerHTML = "";
+        const file =
 
-    detectedSections.forEach(section => {
+            document
+            .getElementById(
+                "pdfFile"
+            )
+            .files[0];
 
-        container.innerHTML += `
+        if(!file){
 
-        <div class="room">
+            alert(
+                "Select a PDF first."
+            );
 
-            ✅ ${section.title}
+            return;
 
-        </div>
+        }
 
-        `;
+        const pdf =
 
-        select.innerHTML += `
+            await pdfjsLib
+            .getDocument({
 
-        <option>
-
-            ${section.title}
-
-        </option>
-
-        `;
-
-    });
-
-}
-
-function renderProducts() {
-
-    const container =
-        document.getElementById(
-            "productsContainer"
-        );
-
-    if (products.length === 0) {
-
-        container.innerHTML = `
-
-        <div class="empty-state">
-
-            No products loaded yet
-
-        </div>
-
-        `;
-
-        return;
-
-    }
-
-    let html = "";
-
-    products.forEach(product => {
-
-        html += `
-
-        <div class="product-card">
-
-            <div class="product-title">
-
-                ${product.section}
-
-            </div>
-
-            <div class="product-item">
-
-                Brand:
-                ${product.brand}
-
-            </div>
-
-            <div class="product-item">
-
-                Model:
-                ${product.model}
-
-            </div>
-
-        </div>
-
-        `;
-
-    });
-
-    container.innerHTML = html;
-
-}
-
-async function readQuote() {
-    alert(
-"reader started"
-);
-
-    const file =
-        document.getElementById(
-            "pdfFile"
-        ).files[0];
-
-    if (!file) {
-
-        alert(
-            "Please select a PDF quote."
-        );
-
-        return;
-
-    }
-
-    const pdf =
-        await pdfjsLib.getDocument({
-alert(
-"pdf loaded"
-);
-            data:
+                data:
                 await file.arrayBuffer()
 
-        }).promise;
+            })
+            .promise;
 
-    let allItems = [];
+        let rows = [];
 
-    for (
-        let page = 1;
-        page <= pdf.numPages;
-        page++
-    ) {
+        for(
 
-        const currentPage =
-            await pdf.getPage(page);
+            let pageNumber = 1;
 
-        const textContent =
-            await currentPage.getTextContent();
+            pageNumber <= pdf.numPages;
 
-        allItems =
+            pageNumber++
 
-            allItems.concat(
-                textContent.items
-                alert(
-"items found: " +
-textContent.items.length
-);
-            );
-        console.log(
-textContent.items
-);
+        ){
 
+            const page =
+
+                await pdf
+                .getPage(
+                    pageNumber
+                );
+
+            const content =
+
+                await page
+                .getTextContent();
+
+            content.items.forEach(item=>{
+
+                rows.push({
+
+                    text:
+                    (item.str || "")
+                    .trim(),
+
+                    x:
+                    item.transform[4],
+
+                    y:
+                    Math.round(
+                        item.transform[5]
+                    )
+
+                });
+
+            });
+
+        }
+
+        buildSections(
+            rows
+        );
 
     }
 
-    detectSectionsFromCoordinates(
-        allItems
-    );
+    catch(error){
+
+        console.error(
+            error
+        );
+
+        alert(
+            "Error reading PDF"
+        );
+
+    }
 
 }
 
-function detectSectionsFromCoordinates(items){
+/* -------------------------- */
+/* SECTION DETECTION          */
+/* -------------------------- */
 
-    alert("NEW ALGORITHM RUNNING");
-    const rows = [];
+function buildSections(rows){
 
-    items.forEach(item=>{
-
-        const text =
-        (item.str || "").trim();
-
-        if(text==="") return;
-
-        rows.push({
-
-            text,
-
-            x: item.transform[4],
-
-            y: Math.round(
-                item.transform[5]
-            )
-
-        });
-
-    });
+    detectedSections = [];
 
     const groupedRows = [];
 
     rows.forEach(row=>{
 
-        let existing =
-
-        groupedRows.find(
-
-            r => Math.abs(
-                r.y-row.y
-            ) < 3
-
-        );
-
-        if(existing){
-
-            existing.cells.push(row);
-
-        }else{
-
-            groupedRows.push({
-
-                y: row.y,
-
-                cells:[row]
-
-            });
-
-        }
-
-    });
-
-    groupedRows.sort(
-        (a,b)=>b.y-a.y
-    );
-
-    detectedSections = [];
-
-    groupedRows.forEach(row=>{
-
-        row.cells.sort(
-            (a,b)=>a.x-b.x
-        );
-
-        const firstCell =
-        row.cells[0];
-
-        const secondCell =
-        row.cells[1];
-
-        const thirdCell =
-        row.cells[2];
-
-        const fourthCell =
-        row.cells[3];
-
-        const fifthCell =
-        row.cells[4];
-
-        /*
-        SECTION RULE
-
-        Column 1 empty
-        Column 2 contains text
-        Qty empty
-        Prices empty
-
-        Example:
-
-        MASTER BATH 60X30
-
-        visible in description column only
-        */
-
-        const modelColumnEmpty =
-
-        !firstCell ||
-        firstCell.text==="";
-
-        const descriptionColumnHasText =
-
-        secondCell &&
-        secondCell.text.length > 0;
-
-        const qtyEmpty =
-
-        !thirdCell;
-
-        const priceEmpty =
-
-        !fourthCell;
-
-        const subtotalEmpty =
-
-        !fifthCell;
-
-        const looksLikeSection =
-
-        descriptionColumnHasText &&
-        qtyEmpty &&
-        priceEmpty &&
-        subtotalEmpty;
-
-        if(looksLikeSection){
-
-            const title =
-            secondCell.text.trim();
-
-            if(
-
-                title.length > 2 &&
-
-                !title.includes("$") &&
-
-                !title.includes("CUSTOMER") &&
-
-                !title.includes("DATE")
-
-            ){
-
-                detectedSections.push({
-
-                    title,
-                    products:[]
-
-                });
-
-            }
-
-        }
-
-    });
-
-    detectedSections =
-
-    detectedSections.filter(
-
-        (section,index,self)=>
-
-        index===self.findIndex(
-            s=>s.title===section.title
-        )
-
-    );
-
-    renderSections();
-
-    alert(
-
-        detectedSections.length +
-        " sections detected"
-
-    );
-
-}
-
-    const rows = [];
-
-    items.forEach(item => {
-
-        rows.push({
-
-            text:
-                (item.str || "")
-                    .trim(),
-
-            x:
-                item.transform[4],
-
-            y:
-                Math.round(
-                    item.transform[5]
-                ),
-
-            height:
-                item.height || 0
-
-        });
-
-    });
-
-    const groupedRows = [];
-
-    rows.forEach(row => {
+        if(!row.text)
+            return;
 
         let existing =
 
             groupedRows.find(
 
-                r => Math.abs(
-                    r.y - row.y
+                r =>
+
+                Math.abs(
+                    r.y-row.y
                 ) < 3
 
             );
 
-        if (existing) {
+        if(existing){
 
             existing.text +=
+
                 " " +
                 row.text;
 
         }
-        else {
+
+        else{
 
             groupedRows.push({
 
                 y:
-                    row.y,
+                row.y,
 
                 text:
-                    row.text
+                row.text
 
             });
 
@@ -503,73 +262,24 @@ function detectSectionsFromCoordinates(items){
 
     groupedRows.sort(
 
-        (a, b) =>
-            b.y - a.y
+        (a,b) =>
+
+        b.y-a.y
 
     );
 
-    detectedSections = [];
+    for(
 
-    for (
         let i = 1;
+
         i < groupedRows.length - 1;
+
         i++
-    ) {
+
+    ){
 
         const current =
             groupedRows[i];
 
         const previous =
-            groupedRows[i - 1];
-
-        const next =
-            groupedRows[i + 1];
-
-        const gapAbove =
-
-            Math.abs(
-                previous.y -
-                current.y
-            );
-
-        const gapBelow =
-
-            Math.abs(
-                current.y -
-                next.y
-            );
-
-        const looksLikeHeader =
-
-            gapAbove > 18 &&
-            gapBelow > 18;
-
-        if (
-            looksLikeHeader
-        ) {
-
-            detectedSections.push({
-
-                title:
-                    current.text,
-
-                products: []
-
-            });
-
-        }
-
-    }
-
-    renderSections();
-
-    alert(
-
-        detectedSections.length +
-        " sections detected"
-
-    );
-
-}
-
-renderProducts();
+     
