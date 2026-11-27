@@ -1,5 +1,4 @@
 let detectedSections = [];
-
 let products = [];
 
 function addSection() {
@@ -12,8 +11,10 @@ function addSection() {
     if (!name) return;
 
     detectedSections.push({
+
         title: name,
         products: []
+
     });
 
     document.getElementById(
@@ -21,6 +22,17 @@ function addSection() {
     ).value = "";
 
     renderSections();
+
+}
+
+function showAddProduct() {
+
+    document
+        .getElementById(
+            "manualProductCard"
+        )
+        .classList
+        .remove("hidden");
 
 }
 
@@ -42,16 +54,15 @@ function addProduct() {
         ).value.trim();
 
     if (!section) return;
-
     if (!brand) return;
-
     if (!model) return;
 
     products.push({
 
         section,
         brand,
-        model
+        model,
+        manual: true
 
     });
 
@@ -64,17 +75,6 @@ function addProduct() {
     ).value = "";
 
     renderProducts();
-
-}
-
-function showAddProduct() {
-
-    document
-        .getElementById(
-            "manualProductCard"
-        )
-        .classList
-        .remove("hidden");
 
 }
 
@@ -91,7 +91,6 @@ function renderSections() {
         );
 
     container.innerHTML = "";
-
     select.innerHTML = "";
 
     detectedSections.forEach(section => {
@@ -130,7 +129,7 @@ function renderProducts() {
     if (products.length === 0) {
 
         container.innerHTML = `
-        
+
         <div class="empty-state">
 
             No products loaded yet
@@ -198,17 +197,15 @@ async function readQuote() {
 
     }
 
-    const arrayBuffer =
-        await file.arrayBuffer();
-
     const pdf =
         await pdfjsLib.getDocument({
 
-            data: arrayBuffer
+            data:
+                await file.arrayBuffer()
 
         }).promise;
 
-    let extractedText = "";
+    let allItems = [];
 
     for (
         let page = 1;
@@ -222,81 +219,152 @@ async function readQuote() {
         const textContent =
             await currentPage.getTextContent();
 
-        const pageText =
-            textContent.items
-                .map(item => item.str)
-                .join(" ");
+        allItems =
 
-        extractedText +=
-            pageText + "\n";
+            allItems.concat(
+                textContent.items
+            );
 
     }
 
-    console.log(
-        extractedText
-    );
-
-    detectSectionCandidates(
-        extractedText
+    detectSectionsFromCoordinates(
+        allItems
     );
 
 }
 
-function detectSectionCandidates(
-    text
+function detectSectionsFromCoordinates(
+    items
 ) {
 
-    detectedSections = [];
+    const rows = [];
 
-    const lines =
-        text
-        .split(/\n|\r/)
-        .map(x => x.trim())
-        .filter(x => x.length > 0);
+    items.forEach(item => {
 
-    const candidates = [];
+        rows.push({
 
-    lines.forEach(line => {
+            text:
+                (item.str || "")
+                    .trim(),
 
-        const looksLikePrice =
-            /\$\d/.test(line);
+            x:
+                item.transform[4],
 
-        const looksLikeModel =
-            /^[A-Z0-9\-]+$/.test(line);
+            y:
+                Math.round(
+                    item.transform[5]
+                ),
 
-        if (
-            !looksLikePrice &&
-            !looksLikeModel &&
-            line.length > 5
-        ) {
+            height:
+                item.height || 0
 
-            candidates.push(line);
+        });
+
+    });
+
+    const groupedRows = [];
+
+    rows.forEach(row => {
+
+        let existing =
+
+            groupedRows.find(
+
+                r => Math.abs(
+                    r.y - row.y
+                ) < 3
+
+            );
+
+        if (existing) {
+
+            existing.text +=
+                " " +
+                row.text;
+
+        }
+        else {
+
+            groupedRows.push({
+
+                y:
+                    row.y,
+
+                text:
+                    row.text
+
+            });
 
         }
 
     });
 
-    const unique =
-        [...new Set(candidates)]
-        .slice(0, 20);
+    groupedRows.sort(
 
-    unique.forEach(line => {
+        (a, b) =>
+            b.y - a.y
 
-        detectedSections.push({
+    );
 
-            title: line,
-            products: []
+    detectedSections = [];
 
-        });
+    for (
+        let i = 1;
+        i < groupedRows.length - 1;
+        i++
+    ) {
 
-    });
+        const current =
+            groupedRows[i];
+
+        const previous =
+            groupedRows[i - 1];
+
+        const next =
+            groupedRows[i + 1];
+
+        const gapAbove =
+
+            Math.abs(
+                previous.y -
+                current.y
+            );
+
+        const gapBelow =
+
+            Math.abs(
+                current.y -
+                next.y
+            );
+
+        const looksLikeHeader =
+
+            gapAbove > 18 &&
+            gapBelow > 18;
+
+        if (
+            looksLikeHeader
+        ) {
+
+            detectedSections.push({
+
+                title:
+                    current.text,
+
+                products: []
+
+            });
+
+        }
+
+    }
 
     renderSections();
 
     alert(
 
         detectedSections.length +
-        " section candidates found"
+        " sections detected"
 
     );
 
