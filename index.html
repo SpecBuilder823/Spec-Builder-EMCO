@@ -430,24 +430,22 @@ document.getElementById("roomInput").value="";
 
 async function readQuote(){
 
-alert("Button works");
+alert("Reader started");
 
 const file =
 document.getElementById("pdfFile").files[0];
 
 if(!file){
 
-alert("No PDF selected");
+alert("Please select a PDF");
 return;
 
 }
 
 alert(
-"PDF selected: " +
+"PDF Selected: " +
 file.name
 );
-
-}
 
 const arrayBuffer =
 await file.arrayBuffer();
@@ -458,44 +456,37 @@ data:arrayBuffer
 }).promise;
 
 let sections = [];
-let currentSection = null;
 
-for(let pageNumber=1; pageNumber<=pdf.numPages; pageNumber++){
+for(let pageNumber=1;
+pageNumber<=pdf.numPages;
+pageNumber++){
 
 const page =
 await pdf.getPage(pageNumber);
 
 const content =
 await page.getTextContent();
-  alert(
-"Text items found: " +
-content.items.length
-);
-
-const items = content.items;
-
-/*
-Detect headers based on:
-- larger text
-- uppercase text
-- room section titles
-*/
-
-items.forEach(item=>{
 
 const text =
-item.str.trim();
 
-const height =
-item.height || 0;
+content.items
+.map(item=>item.str)
+.join(" ");
+
+const lines =
+text.split(/(?=LOT)/g);
+
+lines.forEach(line=>{
 
 if(
-text.length > 8 &&
-text === text.toUpperCase() &&
-height > 10
+line.includes(" - ")
+&&
+line.length > 15
 ){
 
-sections.push(text);
+sections.push(
+line.trim()
+);
 
 }
 
@@ -505,170 +496,38 @@ sections.push(text);
 
 sections = [...new Set(sections)];
 
-alert(
-"Rooms detected: " +
-foundRooms.length
-);
-  
 renderSections(sections);
 
 }
 
 function renderSections(sections){
 
-const roomContainer =
-document.getElementById("manualRooms");
-
-const productContainer =
-document.getElementById("productsByRoom");
-
-roomContainer.innerHTML="";
-productContainer.innerHTML="";
-
-sections.forEach(section=>{
-
-roomContainer.innerHTML += `
-
-<div class="room">
-✅ ${section.title}
-</div>
-
-`;
-
-let productHtml = `
-<div class="card" style="margin-top:15px;">
-<h3>${section.title}</h3>
-<ul>
-`;
-
-section.products.forEach(product=>{
-
-productHtml += `
-<li>${product}</li>
-`;
-
-});
-
-productHtml += `
-</ul>
-</div>
-`;
-
-productContainer.innerHTML += productHtml;
-
-});
-
-}
-
-
-return;
-
-}
-
-sections.forEach(section=>{
-
-container.innerHTML += `
-
-<div class="room">
-
-✅ ${section}
-
-</div>
-
-`;
-
-});
-
-}
-
-const file =
-document.getElementById("pdfFile").files[0];
-
-if(!file){
-
-alert("Please select a PDF.");
-return;
-
-}
-
-const arrayBuffer =
-await file.arrayBuffer();
-
-const pdf =
-await pdfjsLib.getDocument({
-data:arrayBuffer
-}).promise;
-
-let fullText = "";
-
-for(let page=1; page<=pdf.numPages; page++){
-
-const currentPage =
-await pdf.getPage(page);
-
-const content =
-await currentPage.getTextContent();
-
-const pageText =
-content.items
-.map(item=>item.str)
-.join(" ");
-
-fullText += pageText + "\n";
-
-}
-
-detectRooms(fullText);
-
-}
-
-function detectRooms(text){
-
-const rooms = [
-
-"KITCHEN",
-"KITCHEN SS",
-"POWDER ROOM",
-"MASTER ENSUITE",
-"ENSUITE UPPER FLOOR",
-"BATH",
-"LAUNDRY"
-
-];
-
-let foundRooms = [];
-
-rooms.forEach(room=>{
-
-if(
-text.toUpperCase()
-.includes(room)
-){
-
-foundRooms.push(room);
-
-}
-
-});
-
-renderRooms(foundRooms);
-
-}
-
-function renderRooms(rooms){
-
 const container =
 document.getElementById("manualRooms");
 
 container.innerHTML = "";
 
-rooms.forEach(room=>{
+if(sections.length===0){
+
+container.innerHTML =
+
+`<div class="room">
+No sections detected
+</div>`;
+
+return;
+
+}
+
+sections.forEach(section=>{
 
 container.innerHTML +=
 
 `
 <div class="room">
-✅ ${room}
+
+✅ ${section}
+
 </div>
 `;
 
