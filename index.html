@@ -458,6 +458,10 @@ await pdf.getPage(pageNumber);
 
 const content =
 await page.getTextContent();
+  alert(
+"Text items found: " +
+content.items.length
+);
 
 const items = content.items;
 
