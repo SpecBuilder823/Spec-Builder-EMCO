@@ -192,6 +192,9 @@ function renderProducts() {
 }
 
 async function readQuote() {
+    alert(
+"reader started"
+);
 
     const file =
         document.getElementById(
@@ -210,7 +213,9 @@ async function readQuote() {
 
     const pdf =
         await pdfjsLib.getDocument({
-
+alert(
+"pdf loaded"
+);
             data:
                 await file.arrayBuffer()
 
@@ -234,6 +239,10 @@ async function readQuote() {
 
             allItems.concat(
                 textContent.items
+                alert(
+"items found: " +
+textContent.items.length
+);
             );
         console.log(
 textContent.items
